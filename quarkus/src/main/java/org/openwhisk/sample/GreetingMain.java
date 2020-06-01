@@ -22,7 +22,7 @@ public class GreetingMain {
 
         String name = rootNode.at("/message").asText();
         ObjectNode response = JsonNodeFactory.instance.objectNode();
-        response.put("greeting", "Hello "+name);
+        response.put("greeting", "GreetingMain: " + service.greeting(name));
         return response;
     }
 
