@@ -1,23 +1,21 @@
-package org.openwhisk;
+package org.apache.openwhisk;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
-import io.quarkus.runtime.annotations.QuarkusMain;
-import org.openwhisk.sample.GreetingMain;
+import org.apache.openwhisk.sample.GreetingMain;
 
 import javax.inject.Inject;
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 
 
 public class OWQuarkusActionLoop implements QuarkusApplication {
 
     @Inject
-    GreetingMain service;
+    OWMainInterface service;
 
     @Override
     public int run(String... args) throws Exception {
@@ -34,10 +32,20 @@ public class OWQuarkusActionLoop implements QuarkusApplication {
 
 
         Scanner sc = new Scanner(System.in);
+        String activeProfile = io.quarkus.runtime.configuration.ProfileManager.getActiveProfile();
+        PrintWriter out;
+        if (activeProfile.equalsIgnoreCase("dev")) {
+            out = new PrintWriter(System.out);
+        } else if (activeProfile.equalsIgnoreCase("test")) {
+            out = new PrintWriter(System.out);
+        } else {
+            // Production mode when used with the Action Proxy
+            out = new PrintWriter(
+                    new OutputStreamWriter(
+                            new FileOutputStream("/dev/fd/3"), "UTF-8"));
+        }
 
-        PrintWriter out = new PrintWriter(
-                new OutputStreamWriter(
-                        new FileOutputStream("/dev/fd/3"), "UTF-8"));
+        System.err.println("Send the ACK to let OW know the action is ready");
         // Send the ACK to let OW know the action is ready
         out.println("{ \"ok\": true }");
         out.flush();
@@ -47,9 +55,9 @@ public class OWQuarkusActionLoop implements QuarkusApplication {
             try {
                 input = sc.nextLine();
                 if (input == null) {
-                    System.out.println("input was null, exiting");
+                    System.out.println("input was null, ignoring");
                     continue;
-                } else if (input=="") {
+                } else if (input.equals("")) {
                     System.out.println("input was empty, exiting");
                     break;
                 }
@@ -76,14 +84,13 @@ public class OWQuarkusActionLoop implements QuarkusApplication {
             System.out.flush();
             System.err.flush();
         }
-
         return 0;
 
     }
 
         private void debugLog(boolean debugMode, String logMessage) {
             if (debugMode)
-                System.out.println(logMessage);
+                System.out.println("__ow_debug: " + logMessage);
         }
 
         private void constructAndSeSetException(PrintWriter out, Exception e) {

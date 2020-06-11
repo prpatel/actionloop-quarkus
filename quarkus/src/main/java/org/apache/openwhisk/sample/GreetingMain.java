@@ -1,28 +1,25 @@
-package org.openwhisk.sample;
+package org.apache.openwhisk.sample;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.control.ActivateRequestContext;
 import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.quarkus.runtime.Quarkus;
-import io.quarkus.runtime.QuarkusApplication;
-import io.quarkus.runtime.annotations.QuarkusMain;
-import org.openwhisk.OWJSONHelper;
+import org.apache.openwhisk.OWMainInterface;
 
 @ApplicationScoped
-public class GreetingMain {
+public class GreetingMain implements OWMainInterface {
 
     @Inject
     GreetingService service;
 
+    @Override
     public JsonNode run(JsonNode rootNode) throws Exception {
 
-        String name = rootNode.at("/message").asText();
+        String name = rootNode.at("/name").asText();
         ObjectNode response = JsonNodeFactory.instance.objectNode();
-        response.put("greeting", "GreetingMain: " + service.greeting(name));
+        response.put("greeting", service.greeting(name));
         return response;
     }
 

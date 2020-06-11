@@ -1,4 +1,4 @@
-package org.openwhisk.sample;
+package org.apache.openwhisk.sample;
 
 import javax.enterprise.context.ApplicationScoped;
 

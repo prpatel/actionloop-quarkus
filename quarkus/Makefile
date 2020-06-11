@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-IMG=actionloop-quarkus-1.4.2:latest
+IMG=actionloop-quarkus-1.5.0:latest
 INVOKE=python3.7 ../tools/invoke.py
 PREFIX=prpatel
 
@@ -42,7 +42,7 @@ debug: build
 test-single:
 	$(INVOKE) init hello ../example/hello.py
 	$(INVOKE) run '{}'
-	$(INVOKE) run '{"message":"Mike"}'
+	$(INVOKE) run '{"name":"Mike"}'
 
 test-simple-invoke:
 	$(INVOKE) run '{"name":"Mike"}'
