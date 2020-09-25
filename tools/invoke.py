@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.7
+#!/usr/bin/env python3
 """Executable Python script for testing the action proxy.
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -97,7 +97,7 @@ def init(args):
             contents = fp.read()
         contents = base64.b64encode(contents).decode("ascii")
         binary = True
-    elif artifact is not '':
+    elif artifact != '':
         with(codecs.open(artifact, 'r', 'utf-8')) as fp:
             contents = fp.read()
         binary = False

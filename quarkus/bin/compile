@@ -44,7 +44,7 @@ def build(src_dir, tgt_dir):
     # print("location of jar file: %s" % tgt_dir, file=stdout)
     write_file("%s/exec" % tgt_dir, """#!/bin/sh
 cd "$(dirname $0)"
-exec /opt/java/openjdk/bin/java -classpath %s/application.jar:/app/lib/* org.openwhisk.Main
+exec /opt/java/openjdk/bin/java -classpath %s/application.jar:/app/lib/* org.apache.openwhisk.Main
 """ % tgt_dir)
 
 if __name__ == '__main__':

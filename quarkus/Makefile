@@ -15,8 +15,8 @@
 # limitations under the License.
 #
 
-IMG=actionloop-quarkus-1.5.0:latest
-INVOKE=python3.7 ../tools/invoke.py
+IMG=actionloop-quarkus-1.8.1:latest
+INVOKE=python3 ../tools/invoke.py
 PREFIX=prpatel
 
 build:
@@ -42,21 +42,21 @@ debug: build
 test-single:
 	$(INVOKE) init hello ../example/hello.py
 	$(INVOKE) run '{}'
-	$(INVOKE) run '{"name":"Mike"}'
+	$(INVOKE) run '{"name":"Pratik"}'
 
 test-simple-invoke:
-	$(INVOKE) run '{"name":"Mike"}'
+	$(INVOKE) run '{"name":"Pratik"}'
 
 test-src-zip:
 	$(MAKE) -C ../example src.zip
 	$(INVOKE) init ../example/src.zip
 	$(INVOKE) run '{}'
-	$(INVOKE) run '{"name":"Mike"}'
+	$(INVOKE) run '{"name":"Pratik"}'
 
 test-bin-zip:
 	$(INVOKE) init test target/quarkus-command-mode-1.0.0-SNAPSHOT-runner.jar
 # 	$(INVOKE) run '{}'
-	$(INVOKE) run '{"message":"Mike"}'
+	$(INVOKE) run '{"name":"Pratik"}'
 
 test-command-line-start:
 	mvn package
